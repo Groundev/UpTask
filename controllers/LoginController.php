@@ -70,13 +70,35 @@ class LoginController{
         ]);
     }
     public static function olvide (Router $router){
-        
+        $alertas = [];
 
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $usuario = new Usuario($_POST);
+            $alertas = $usuario->validarEmail();
+
+            if(empty($alertas)){
+                // Buscar el usuario
+                $usuario = Usuario::where('email', $usuario->email);
+                 
+                if($usuario && $usuario->confirmado){
+                    // Generar un nuevo token
+
+                    // Actualizar el usuario
+
+                    // Enviar email
+
+                    // Imprimir la alerta
+                }else{
+                    Usuario::setAlerta('error', 'EL Usuario no existe o no esta confirmado');
+                    $alertas = Usuario::getAlertas();
+                }
+            }
 
         }
         $router->render('auth/olvide', [
-            'titulo' => 'Cambiar Contraseña'
+            'titulo' => 'Cambiar Contraseña',
+            'alertas' => $alertas
+
         ]);
     }
     public static function reestablecer (Router $router){
