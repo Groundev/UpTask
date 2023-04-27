@@ -83,18 +83,24 @@ class LoginController{
                 if($usuario && $usuario->confirmado){
                     // Generar un nuevo token
 
+                    // Crear Token 
+                    $usuario->crearToken();
+                    unset($usuario->password2);
                     // Actualizar el usuario
-
+                    $usuario->guardar();
                     // Enviar email
-
+                    $email = new Email($usuario->nombre, $usuario->email, $usuario->token);
+                    $email->enviarInstrucciones();
+                    
                     // Imprimir la alerta
+                    Usuario::setAlerta('exito', 'Se han enviado las instrucciones a tu email');
                 }else{
                     Usuario::setAlerta('error', 'EL Usuario no existe o no esta confirmado');
-                    $alertas = Usuario::getAlertas();
                 }
             }
-
         }
+        $alertas = Usuario::getAlertas();
+
         $router->render('auth/olvide', [
             'titulo' => 'Cambiar Contraseña',
             'alertas' => $alertas
@@ -102,13 +108,28 @@ class LoginController{
         ]);
     }
     public static function reestablecer (Router $router){
-        
+        $token = s($_GET['token']);
+        $mostrar = true;
 
-        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+        if(!$token) header('Location: /');
+
+        // Identificar al usuario con el mismo token
+        $usuario = Usuario::where('token', $token);
+
+        if(empty($usuario)){
+            Usuario::setAlerta('error', 'Token No Válido');
+            $mostrar = false;
 
         }
+
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+        }
+        $alertas = Usuario::getAlertas();
+
         $router->render('auth/reestablecer', [
-            'titulo' => 'Introduce Nueva Contraseña'
+            'titulo' => 'Introduce Nueva Contraseña',
+            'alertas' => $alertas,
+            'mostrar' => $mostrar
         ]);
     }
     public static function mensaje (Router $router){
