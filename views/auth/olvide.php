@@ -4,7 +4,7 @@
         <p class="descripcion-pagina">Cambia Tu Contraseña</p>
         <?php include_once __DIR__ . '/../templates/alertas.php' ;?>
 
-        <form action="/olvide" method="POST" class="formulario">
+        <form action="/olvide" method="POST" class="formulario" novalidate>
         
             <div class="campo">
                 <label for="email">Email</label>

@@ -5,7 +5,7 @@
 
     <?php include_once __DIR__ . '/../templates/alertas.php' ;?>
 
-        <form action="/crear" method="POST" class="formulario">
+        <form action="/crear" method="POST" class="formulario" novalidate>
         <div class="campo">
                 <label for="nombre">Nombre</label>
                 <input type="text" id="nombre" placeholder="Tu Nombre" name="nombre" value="<?php echo $usuario->nombre;?>">

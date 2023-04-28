@@ -21,6 +21,20 @@ class Usuario extends ActiveRecord{
         $this->token = $args['token'] ?? '';
         $this->confirmado = $args['confirmado'] ?? 0;
     }
+
+    // Valida un email
+    public function validarLogin(){
+        if(!$this->email){
+            self::$alertas['error'][] = 'El Email es Obligatorio';
+        }
+        if(!filter_var($this->email, FILTER_VALIDATE_EMAIL)){
+            self::$alertas['error'][] = 'Email no valida';
+        }
+        if(!$this->password){
+            self::$alertas['error'][] = 'La Contraseña es Obligatoria';
+        }
+        return self::$alertas;
+    }
     public function validarCuentaNueva(){
         if(!$this->nombre){
             self::$alertas['error'][] = 'El Nombre del Usuario es Obligatorio';
