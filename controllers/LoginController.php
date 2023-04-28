@@ -123,6 +123,28 @@ class LoginController{
         }
 
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            // Añadir la nueva contraseña
+            $usuario->sincronizar($_POST);
+
+            // Validar la contraseña
+            $alertas = $usuario->validarContraseña();
+
+            if(empty($alertas)){
+                // Hashear contraseña
+                $usuario->hashPassword();
+
+                // ELiminar TOken
+                $usuario->token = null;
+                //Guardar Contraseña
+                $resultado = $usuario->guardar();
+
+                // Redireccionar
+                if($resultado){
+                    header('Location: /');
+                }
+
+            }
+            
         }
         $alertas = Usuario::getAlertas();
 
