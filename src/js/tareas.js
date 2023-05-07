@@ -31,6 +31,10 @@
             return
         }
 
+        const estados = {
+            0: 'Pendiente',
+            1: 'Completa'
+        }
         tareas.forEach(tarea => {
             const contenedorTarea = document.createElement('LI')
             contenedorTarea.dataset.tareaId = tarea.id
@@ -39,7 +43,29 @@
             const nombreTarea = document.createElement('P')
             nombreTarea.textContent = tarea.nombre
 
-            console.log(nombreTarea)
+            const opcionesDiv = document.createElement('DIV')
+            opcionesDiv.classList.add('opciones')
+
+            // Botones
+            const btnEstadoTarea = document.createElement('BUTTON')
+            btnEstadoTarea.classList.add('estado-tarea')
+            btnEstadoTarea.classList.add(`${estados[tarea.estado].toLowerCase()}`)
+            btnEstadoTarea.textContent = estados[tarea.estado]
+            btnEstadoTarea.dataset.estadoTarea = tarea.estado
+
+            const btnEliminarTarea = document.createElement('BUTTON')
+            btnEliminarTarea.classList.add('eliminar-tarea')
+            btnEliminarTarea.dataset.idTarea = tarea.id
+            btnEliminarTarea.textContent = 'Eliminar'
+
+            opcionesDiv.appendChild(btnEstadoTarea)
+            opcionesDiv.appendChild(btnEliminarTarea)
+
+            contenedorTarea.appendChild(nombreTarea)
+            contenedorTarea.appendChild(opcionesDiv)
+
+            const listadoTareas = document.querySelector('#listado-tareas')
+            listadoTareas.appendChild(contenedorTarea)
 
         });
     }
