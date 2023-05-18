@@ -34,4 +34,14 @@
       border-radius: 10px;
     }
   }
+  .enlace{
+    color: v.$cyan;
+    font-size: 1.7rem;
+    font-weight: 600;
+    
+    &:hover{
+      color: darken(v.$azul, 20%);
+      
+    }
+  }
 }

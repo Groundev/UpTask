@@ -83,7 +83,7 @@ class Usuario extends ActiveRecord{
             self::$alertas['error'][] = 'El Email es Obligatorio';
         }
         if(!filter_var($this->email, FILTER_VALIDATE_EMAIL)){
-            self::$alertas['error'][] = 'Email no valida';
+            self::$alertas['error'][] = 'Formato de Email No Válido';
         }
         return self::$alertas;
     }

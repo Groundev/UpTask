@@ -82,14 +82,47 @@ class DashboardController{
             $alertas = $usuario->validar_perfil();
 
             if(empty($alertas)){
-                // Guardar al usuario
+
+                $existeUsuario = Usuario::where('email', $usuario->email);
+                
+                if($existeUsuario && $existeUsuario->id !== $usuario->id){
+                    // Mensaje de Error
+                Usuario::setAlerta('error', 'Email ya Registrado');
+            }else{
+                    // Guardar el Registro
+                $usuario->guardar();
+
+                Usuario::setAlerta('exito', 'Guardado Correctamente');
+
+                // Asignar el nuevo nombre
+                $_SESSION['nombre'] = $usuario->nombre;
+                }
             }
 
         }
+        $alertas = $usuario->getAlertas();
         // Render a la vista
         $router->render('dashboard/perfil', [
             'titulo' => 'Perfil',
             'usuario' => $usuario,
+            'alertas' => $alertas
+            
+        ]);
+    }
+    public static function cambiar_password (Router $router){
+        session_start();
+        isAuth();
+        $alertas =[];
+
+        
+
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+
+        }
+        
+        // Render a la vista
+        $router->render('dashboard/cambiar-password', [
+            'titulo' => 'Cambiar Contraseña',
             'alertas' => $alertas
             
         ]);
