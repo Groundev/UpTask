@@ -117,7 +117,38 @@ class DashboardController{
         
 
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $usuario = Usuario::find($_SESSION['id']);
 
+            // Sincronizar con la basde de datos
+            $usuario->sincronizar($_POST);
+            $alertas = $usuario->nuevo_password();
+
+            if(empty($alertas)){
+                
+                $resultado = $usuario->comprobar_password();
+
+                if($resultado){
+
+                    $usuario->password = $usuario->password_nuevo;
+                    // Eliminar propiedades no necesarias
+                    unset($usuario->password_actual);
+                    unset($usuario->password_nuevo);
+
+                    // Hashear La Nueva Contraseña
+                    $usuario->hashPassword();
+
+                    // Actualizar la Contraseña
+                   $resultado = $usuario->guardar();
+
+                   if($resultado){
+                     Usuario::setAlerta('exito', 'Contraseña Actualizada Correctamente');
+                   }
+                }else{
+                    Usuario::setAlerta('error', 'Contraseña Incorrecta');
+                }
+                
+            }
+            $alertas = $usuario->getAlertas();
         }
         
         // Render a la vista

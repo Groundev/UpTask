@@ -5,10 +5,10 @@
 
 <a href="/perfil" class="enlace">Volver al Perfil</a>
 
-<form action="/perfil" class="formulario" method="POST">
+<form action="/cambiar-password" class="formulario" method="POST">
     <div class="campo">
         <label for="nombre">Contraseña Actual</label>
-        <input type="pasword" 
+        <input type="password" 
            name="password_actual" 
             placeholder="Tu Contraseña Actual" >
     </div>
